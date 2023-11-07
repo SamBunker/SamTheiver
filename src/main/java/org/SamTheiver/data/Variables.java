@@ -1,9 +1,8 @@
 package org.SamTheiver.data;
-
 import org.powbot.api.event.NpcActionEvent;
 import org.powbot.api.rt4.Players;
-
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Random;
 
 public class Variables {
@@ -15,10 +14,11 @@ public class Variables {
     private Constants cons;
     Random random = new Random();
     public ArrayList<NpcActionEvent> npcAction;
+    public LinkedHashMap<String, String> inv;
     public NpcActionEvent npcEvent;
-    public int randomCoinPouch = (cons.maxPouches - random.nextInt(7));
-    public boolean healCheck = Players.local().healthPercent() > (50 - random.nextInt(7));
-
+    public int randomCoinPouch = (cons.MAX_POUCHES - random.nextInt(7));
+    public int healConfiguration;
+    public boolean healCheck = Players.local().healthPercent() > (healConfiguration - random.nextInt(7));
 
     public void selectedNPC(ArrayList<NpcActionEvent> nae) {
         npcAction = nae;
@@ -26,7 +26,12 @@ public class Variables {
         return;
     }
 
-
-//    ArrayList<NpcActionEvent> npcAction = (getOption("npc"));
-//    NpcActionEvent npcEvent = npcAction.get(0);
+    public boolean inventoryCheck(LinkedHashMap inventory) {
+        if (inventory.keySet().isEmpty()) {
+            return false;
+        } else {
+            inv = inventory;
+            return true;
+        }
+    }
 }

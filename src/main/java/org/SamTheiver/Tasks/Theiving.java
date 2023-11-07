@@ -1,14 +1,10 @@
 package org.SamTheiver.Tasks;
-
-import com.google.errorprone.annotations.Var;
 import org.SamTheiver.SamTheiver;
 import org.SamTheiver.Task;
 import org.SamTheiver.data.Constants;
 import org.SamTheiver.data.Variables;
 import org.powbot.api.Condition;
 import org.powbot.api.rt4.*;
-
-import java.util.Random;
 
 public class Theiving extends Task {
     SamTheiver main;
@@ -26,10 +22,10 @@ public class Theiving extends Task {
 
     @Override
     public boolean activate() {
-        return Inventory.stream().name(cons.coinPouch).count() < vars.randomCoinPouch
+        return Inventory.stream().name(cons.COIN_POUCH).count() < vars.randomCoinPouch
                 && Npcs.stream().name(vars.npcEvent.getStrippedName()).nearest().first().inViewport()
                 && vars.healCheck;
-        // return if user is within theiving area selected, and the selected npc is within viewport, if hp is > input variable, it'll take it and add a range to it
+        // return if user is within theiving area selected
     }
 
     @Override

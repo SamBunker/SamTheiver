@@ -6,6 +6,6 @@ public class Constants {
         super();
     }
 
-    public String coinPouch = "Coin pouch";
-    public int maxPouches = 10;
+    public String COIN_POUCH = "Coin pouch";
+    public int MAX_POUCHES = 10;
 }

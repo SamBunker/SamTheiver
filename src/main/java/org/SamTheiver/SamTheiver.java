@@ -1,7 +1,7 @@
 package org.SamTheiver;
-
 import org.SamTheiver.Tasks.CoinPouch;
-import org.SamTheiver.Tasks.LocationCheck;
+import org.SamTheiver.Tasks.Heal;
+import org.SamTheiver.Tasks.MoveTo;
 import org.SamTheiver.Tasks.Theiving;
 import org.SamTheiver.data.Constants;
 import org.SamTheiver.data.Variables;
@@ -13,7 +13,6 @@ import org.powbot.api.script.paint.Paint;
 import org.powbot.api.script.paint.PaintBuilder;
 import org.powbot.mobile.script.ScriptManager;
 import org.powbot.mobile.service.ScriptUploader;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -30,15 +29,9 @@ import java.util.LinkedHashMap;
 )
 @ScriptConfiguration(
         name = "healing",
-        description = "What health do you want to stay above?",
+        description = "Around what health do you want to stay above?",
         optionType = OptionType.INTEGER
 )
-
-//@ScriptConfiguration(
-//        name = "itemCheck",
-//        description = "Check item",
-//        optionType = OptionType.INVENTORY_ACTIONS
-//)
 
 @ScriptManifest(name = "SamTheiver", description = "An enhanced theiving script for PowBot.", author="Sam", version = "1", category = ScriptCategory.Magic)
 public class SamTheiver extends AbstractScript {
@@ -53,8 +46,13 @@ public class SamTheiver extends AbstractScript {
 
     @Override
     public void onStart() {
+        vars.healConfiguration = getOption("healing");
         ArrayList<NpcActionEvent> npcAction = (getOption("npc"));
         LinkedHashMap<String, String> inv = (getOption("inventory"));
+//        Check to see if inventory is valid, then send it off to variables in a void function to return
+        if (!vars.inventoryCheck(getOption("inventory"))) {
+            Notifications.showNotification("By not selecting your inventory, you will not eat when your hp is low.");
+        }
 
         if (npcAction.isEmpty()) {
             Notifications.showNotification("You did not select an NPC!");
@@ -68,10 +66,10 @@ public class SamTheiver extends AbstractScript {
                     Notifications.showNotification(vars.npcEvent.getStrippedName() + ", " + vars.npcEvent.getInteraction());
                     taskList.add(new Theiving(this, cons, vars));
                     taskList.add(new CoinPouch(this, cons, vars));
-                    taskList.add(new LocationCheck(this, vars));
+                    taskList.add(new MoveTo(this, vars));
+                    taskList.add(new Heal(this, vars));
                 } else {
                     Notifications.showNotification("Interaction Selected: "+vars.npcEvent.getInteraction()+". You must Pickpocket them!");
-//                    Kill the script
                 }
             }
         }

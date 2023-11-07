@@ -21,14 +21,14 @@ public class CoinPouch extends Task {
 
     @Override
     public boolean activate() {
-        return Inventory.stream().name(cons.coinPouch).count() > vars.randomCoinPouch;
+        return Inventory.stream().name(cons.COIN_POUCH).count() > vars.randomCoinPouch;
     }
 
     @Override
     public void execute() {
         main.setTask("Looting Coin Pouches");
-        Inventory.stream().name(cons.coinPouch).first().interact("Open-all");
-        Condition.wait(()-> Inventory.stream().name(cons.coinPouch).isEmpty(), 150, 30);
+        Inventory.stream().name(cons.COIN_POUCH).first().interact("Open-all");
+        Condition.wait(()-> Inventory.stream().name(cons.COIN_POUCH).isEmpty(), 150, 30);
     }
 }
 

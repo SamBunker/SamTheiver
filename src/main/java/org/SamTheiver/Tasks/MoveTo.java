@@ -1,16 +1,15 @@
 package org.SamTheiver.Tasks;
-
 import org.SamTheiver.SamTheiver;
 import org.SamTheiver.Task;
 import org.SamTheiver.data.Variables;
 import org.powbot.api.Condition;
 import org.powbot.api.rt4.*;
 
-public class LocationCheck extends Task {
+public class MoveTo extends Task {
     SamTheiver main;
     private final Variables vars;
 
-    public LocationCheck(SamTheiver main, Variables vars) {
+    public MoveTo(SamTheiver main, Variables vars) {
         super();
         super.name = "LocationCheck";
         this.main = main;
