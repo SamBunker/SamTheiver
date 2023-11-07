@@ -10,7 +10,6 @@ I started development on this PowBot Thieving script on 11/5/2023.
 * (0%) Death handler
 * (0%) Stuck handler
 * (0%) Dodgey necklace handler
-* (0%) Stamina Support
 
 ## Script Bones ##
 * (100%) Task List System
