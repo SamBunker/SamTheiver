@@ -9,3 +9,5 @@ I started development on this PowBot Thieving script on 11/5/2023.
 * Death handler
 * Stuck handler
 * Coin Pouch handler
+* Dodgey necklace handler
+* Stamina Support
