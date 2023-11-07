@@ -2,26 +2,26 @@ package org.SamTheiver.Tasks;
 import org.SamTheiver.SamTheiver;
 import org.SamTheiver.data.Constants;
 import org.SamTheiver.Task;
+import org.SamTheiver.data.Variables;
 import org.powbot.api.Condition;
 import org.powbot.api.rt4.*;
 
-import java.util.Random;
-
 public class CoinPouch extends Task {
     SamTheiver main;
-    private Constants cons;
-    Random random = new Random();
+    private final Constants cons;
+    private final Variables vars;
 
-    public CoinPouch(SamTheiver main, Constants cons) {
+    public CoinPouch(SamTheiver main, Constants cons, Variables vars) {
         super();
         super.name = "CoinPouch";
         this.main = main;
         this.cons = cons;
+        this.vars = vars;
     }
 
     @Override
     public boolean activate() {
-        return Inventory.stream().name(cons.coinPouch).count() > (cons.maxPouches - random.nextInt(7));
+        return Inventory.stream().name(cons.coinPouch).count() > vars.randomCoinPouch;
     }
 
     @Override

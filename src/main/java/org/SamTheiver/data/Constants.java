@@ -7,5 +7,5 @@ public class Constants {
     }
 
     public String coinPouch = "Coin pouch";
-    public int maxPouches = 23;
+    public int maxPouches = 10;
 }

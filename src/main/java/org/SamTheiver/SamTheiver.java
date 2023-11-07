@@ -1,15 +1,18 @@
 package org.SamTheiver;
+
 import org.SamTheiver.Tasks.CoinPouch;
 import org.SamTheiver.Tasks.Theiving;
 import org.SamTheiver.data.Constants;
 import org.SamTheiver.data.Variables;
 import org.powbot.api.Notifications;
+import org.powbot.api.event.NpcActionEvent;
 import org.powbot.api.rt4.walking.model.Skill;
 import org.powbot.api.script.*;
 import org.powbot.api.script.paint.Paint;
 import org.powbot.api.script.paint.PaintBuilder;
 import org.powbot.mobile.script.ScriptManager;
 import org.powbot.mobile.service.ScriptUploader;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -49,24 +52,25 @@ public class SamTheiver extends AbstractScript {
 
     @Override
     public void onStart() {
-        vars.selectedNPC(getOption("npc"));
+        ArrayList<NpcActionEvent> npcAction = (getOption("npc"));
+        NpcActionEvent npcEvent = npcAction.get(0);
         LinkedHashMap<String, String> inv = (getOption("inventory"));
 
-
-        if (vars.npcAction.isEmpty()) {
+        if (npcAction.isEmpty()) {
             Notifications.showNotification("You did not select an NPC!");
         } else {
-            if (vars.npcAction.size() > 1) {
+            if (npcAction.size() > 1) {
                 Notifications.showNotification("You selected too many NPCs!");
             } else {
-                if (vars.npcEvent.getInteraction().toLowerCase().contains("pickpocket")) {
+                if (npcEvent.getInteraction().toLowerCase().contains("pickpocket")) {
+                    vars.selectedNPC(getOption("npc"));
                     pBuilder();
                     Notifications.showNotification(vars.npcEvent.getStrippedName() + ", " + vars.npcEvent.getInteraction());
-                    taskList.add(new Theiving(this, cons));
-                    taskList.add(new CoinPouch(this, cons));
+                    taskList.add(new Theiving(this, cons, vars));
+                    taskList.add(new CoinPouch(this, cons, vars));
 //                    Notifications.showNotification(String.valueOf(inv));
                 } else {
-                    Notifications.showNotification("Interaction Selected: "+vars.npcEvent.getInteraction()+". You must Pickpocket them!");
+                    Notifications.showNotification("Interaction Selected: "+npcEvent.getInteraction()+". You must Pickpocket them!");
 //                    Kill the script
                 }
             }
@@ -82,8 +86,6 @@ public class SamTheiver extends AbstractScript {
                     Notifications.showNotification("Script Stopping!");
                     break;
                 }
-            } else {
-                ScriptManager.INSTANCE.stop();
             }
         }
     }
