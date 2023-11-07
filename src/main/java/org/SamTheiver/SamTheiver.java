@@ -1,6 +1,7 @@
 package org.SamTheiver;
 
 import org.SamTheiver.Tasks.CoinPouch;
+import org.SamTheiver.Tasks.LocationCheck;
 import org.SamTheiver.Tasks.Theiving;
 import org.SamTheiver.data.Constants;
 import org.SamTheiver.data.Variables;
@@ -33,11 +34,11 @@ import java.util.LinkedHashMap;
         optionType = OptionType.INTEGER
 )
 
-@ScriptConfiguration(
-        name = "itemCheck",
-        description = "Check item",
-        optionType = OptionType.INVENTORY_ACTIONS
-)
+//@ScriptConfiguration(
+//        name = "itemCheck",
+//        description = "Check item",
+//        optionType = OptionType.INVENTORY_ACTIONS
+//)
 
 @ScriptManifest(name = "SamTheiver", description = "An enhanced theiving script for PowBot.", author="Sam", version = "1", category = ScriptCategory.Magic)
 public class SamTheiver extends AbstractScript {
@@ -53,7 +54,6 @@ public class SamTheiver extends AbstractScript {
     @Override
     public void onStart() {
         ArrayList<NpcActionEvent> npcAction = (getOption("npc"));
-        NpcActionEvent npcEvent = npcAction.get(0);
         LinkedHashMap<String, String> inv = (getOption("inventory"));
 
         if (npcAction.isEmpty()) {
@@ -62,15 +62,15 @@ public class SamTheiver extends AbstractScript {
             if (npcAction.size() > 1) {
                 Notifications.showNotification("You selected too many NPCs!");
             } else {
-                if (npcEvent.getInteraction().toLowerCase().contains("pickpocket")) {
-                    vars.selectedNPC(getOption("npc"));
+                vars.selectedNPC(getOption("npc"));
+                if (vars.npcEvent.getInteraction().toLowerCase().contains("pickpocket")) {
                     pBuilder();
                     Notifications.showNotification(vars.npcEvent.getStrippedName() + ", " + vars.npcEvent.getInteraction());
                     taskList.add(new Theiving(this, cons, vars));
                     taskList.add(new CoinPouch(this, cons, vars));
-//                    Notifications.showNotification(String.valueOf(inv));
+                    taskList.add(new LocationCheck(this, vars));
                 } else {
-                    Notifications.showNotification("Interaction Selected: "+npcEvent.getInteraction()+". You must Pickpocket them!");
+                    Notifications.showNotification("Interaction Selected: "+vars.npcEvent.getInteraction()+". You must Pickpocket them!");
 //                    Kill the script
                 }
             }
