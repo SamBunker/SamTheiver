@@ -1,7 +1,9 @@
 package org.SamTheiver;
+import org.SamTheiver.Tasks.CoinPouch;
 import org.SamTheiver.Tasks.Theiving;
+import org.SamTheiver.data.Constants;
+import org.SamTheiver.data.Variables;
 import org.powbot.api.Notifications;
-import org.powbot.api.event.NpcActionEvent;
 import org.powbot.api.rt4.walking.model.Skill;
 import org.powbot.api.script.*;
 import org.powbot.api.script.paint.Paint;
@@ -9,6 +11,7 @@ import org.powbot.api.script.paint.PaintBuilder;
 import org.powbot.mobile.script.ScriptManager;
 import org.powbot.mobile.service.ScriptUploader;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 @ScriptConfiguration(
         name = "npc",
@@ -27,9 +30,16 @@ import java.util.ArrayList;
         optionType = OptionType.INTEGER
 )
 
+@ScriptConfiguration(
+        name = "itemCheck",
+        description = "Check item",
+        optionType = OptionType.INVENTORY_ACTIONS
+)
+
 @ScriptManifest(name = "SamTheiver", description = "An enhanced theiving script for PowBot.", author="Sam", version = "1", category = ScriptCategory.Magic)
 public class SamTheiver extends AbstractScript {
-//    private Constants c = new Constants();
+    private Constants cons = new Constants();
+    private Variables vars = new Variables();
     private ArrayList<Task> taskList = new ArrayList<Task>();
     private String task;
 
@@ -39,21 +49,24 @@ public class SamTheiver extends AbstractScript {
 
     @Override
     public void onStart() {
-        ArrayList<NpcActionEvent> npcAction = (getOption("npc"));
-        NpcActionEvent npcEvent = npcAction.get(0);
+        vars.selectedNPC(getOption("npc"));
+        LinkedHashMap<String, String> inv = (getOption("inventory"));
 
-        if (npcAction.isEmpty()) {
+
+        if (vars.npcAction.isEmpty()) {
             Notifications.showNotification("You did not select an NPC!");
         } else {
-            if (npcAction.size() > 1) {
+            if (vars.npcAction.size() > 1) {
                 Notifications.showNotification("You selected too many NPCs!");
             } else {
-                if (npcEvent.getInteraction().toLowerCase().contains("pickpocket")) {
+                if (vars.npcEvent.getInteraction().toLowerCase().contains("pickpocket")) {
                     pBuilder();
-                    Notifications.showNotification(npcEvent.getStrippedName() + ", " + npcEvent.getInteraction());
-                    taskList.add(new Theiving(this));
+                    Notifications.showNotification(vars.npcEvent.getStrippedName() + ", " + vars.npcEvent.getInteraction());
+                    taskList.add(new Theiving(this, cons));
+                    taskList.add(new CoinPouch(this, cons));
+//                    Notifications.showNotification(String.valueOf(inv));
                 } else {
-                    Notifications.showNotification("Interaction Selected: "+npcEvent.getInteraction()+". You must Pickpocket them!");
+                    Notifications.showNotification("Interaction Selected: "+vars.npcEvent.getInteraction()+". You must Pickpocket them!");
 //                    Kill the script
                 }
             }
