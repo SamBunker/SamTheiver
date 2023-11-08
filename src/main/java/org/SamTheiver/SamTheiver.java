@@ -50,6 +50,7 @@ public class SamTheiver extends AbstractScript {
         ArrayList<NpcActionEvent> npcAction = (getOption("npc"));
         LinkedHashMap<String, String> inv = (getOption("inventory"));
 //        Check to see if inventory is valid, then send it off to variables in a void function to return
+
         if (!vars.inventoryCheck(getOption("inventory"))) {
             Notifications.showNotification("By not selecting your inventory, you will not eat when your hp is low.");
         }

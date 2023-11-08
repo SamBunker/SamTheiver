@@ -11,7 +11,7 @@ public class MoveTo extends Task {
 
     public MoveTo(SamTheiver main, Variables vars) {
         super();
-        super.name = "LocationCheck";
+        super.name = "MoveTo";
         this.main = main;
         this.vars = vars;
     }
